@@ -1,7 +1,6 @@
 ---
 title: "A Quickstart Guide to Data Analysis with R/R Markdown"
-subtitle: "https://bit.ly/2lyGAqr"
-author: "Adele Barugahare<br>@technadele"
+author: "Adele Barugahare<br>@technadele<br>https://bit.ly/2lyGAqr"
 date: "27/08/2019"
 output: 
   xaringan::moon_reader:
@@ -13,18 +12,19 @@ output:
       countIncrementalSlides: false
 ---
 
+---
+class: center, middle
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r xaringan-themer, include = FALSE}
 library(xaringanthemer)
-mono_accent_inverse(base_color = "#ccf2ff")
+mono_accent_inverse(base_color = "#0086b3")
 #duo(primary_color = "#ccf2ff", secondary_color = "#0086b3")
 ```
 
----
-class: center, middle
 
 ## In This Talk
 
@@ -69,7 +69,7 @@ Continous active development
 Thorough documentation
 
 ---
-## R Data Analysis Toolbox
+### R Data Analysis Toolbox
 
 * Tidyverse - `an opinionated collection of R packages designed for data science`: ggplot2, dplyr, magrittr, tidyr, readr, etc
   - ggplot2 - extensive plotting package
@@ -85,7 +85,7 @@ knitr::include_graphics("images/toolbox.png")
 
 ---
 
-## Tidyverse
+### Tidyverse
 
 * 'Modern' way of writing R and geared at data science
 * Fixes up some quicky behaviour from base R
@@ -97,14 +97,14 @@ Tidy data:
 2. Each observation is a row.
 3. Each value is a cell.
 
-```{r, tidy_dat_image, out.width="90%" }
+```{r, tidy_dat_image, out.height="90%" }
 knitr::include_graphics("images/tidy_data.png")
 ```
 
 
 ---
 
-## dplyr
+### dplyr
 
 * is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges
 * each verb takes a data frame as input and returns a modified version of it
@@ -123,7 +123,7 @@ knitr::include_graphics("images/waterfall.gif")
 ```
 
 ---
-## dplyr
+### dplyr
 
 * mutate() adds new variables that are functions of existing variables
 * select() picks columns based on their names
@@ -195,7 +195,7 @@ class: center, middle
 Dataset > Manipulate to extract information > `Plot` > Communicate
 
 ---
-## ggplot2
+### ggplot2
 
 Implements the grammar of graphics, a coherent system for describing and building graphs
 
@@ -275,13 +275,12 @@ class: center, middle
 ## Packages For Interactivity
 
 ---
-### Plotly 
-Create interactive plots directly with `plot_ly()` function
+### Plotly
 --
 ```{r, plotly_demo, echo = T}
-df2 %>% group_by(Airline) %>% 
-  plotly::plot_ly(x = ~Month, y = ~Arrivals_On_Time, color=~Airline,
-                type = 'scatter', mode = 'lines')
+df2 %>% group_by(Airline) %>% plotly::plot_ly(x = ~Month, 
+    y = ~Arrivals_On_Time, color=~Airline, type = 'scatter', 
+    mode = 'lines')
 ```
 
 ---
@@ -300,9 +299,9 @@ plotly::ggplotly(gp)
 
 
 ---
-## Shiny
+### Shiny
 
-Develop web applications/dashboards through the use of pre-built widgets. 
+Develop interactive web applications/dashboards through the use of pre-built widgets. 
 
 Two parts to a shiny app:
 
@@ -321,7 +320,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 ---
-## A simple Shiny app in about 10 lines of code
+### A simple Shiny app in about 9 lines of code
 
 ```{r, shiny_example, echo=T, eval=FALSE}
 library(shiny)
@@ -340,7 +339,7 @@ ui <- fluidPage(
 
 
 ---
-```{r, eval=FALSE}
+```{r, server_shiny, echo=T,eval=FALSE}
 # Define server logic required to draw a line plot ----
 server <- function(input, output) {
   output$linePlot <- renderPlot({
@@ -356,7 +355,7 @@ server <- function(input, output) {
 ```
 
 ---
-```{r, shiny_app_launch, eval=FALSE}
+```{r, shiny_app_launch, eval=FALSE, echo=T}
 # Run the application 
 shinyApp(ui = ui, server = server)
 ```
@@ -376,13 +375,12 @@ Dataset > Manipulate to extract information > Plot > `Communicate`
 background-image: url(images/r_env.png)
 background-size: 50%
 background-position: 50% 50%
-
 ---
 ## R Markdown
 
 The marriage between Markdown, a lightweight markup language and R, a programming language for statistics
 
-An R Markdown file is a plain text document that allows you to embed R code chunks + plain text notes & images. 
+An R Markdown file is a plain text document that allows you to embed R code chunks + plain text notes & images & videos. 
 
 Structure:
 
@@ -400,7 +398,7 @@ An R Markdown file by itself is quite simple but is neatly rendered into a more 
 
 Meta-data that controls the document that is produced, one file can output to multiple file types
 
-Different documents have different options to customise
+Different documents have different options to customise e.g PDF documents can embed LaTeX and will have YAML options specific to LaTeX that cannot be used in html_documents
 
 Identation is important
 
@@ -416,6 +414,9 @@ output:
     df_print: "paged"
     toc: true
     toc_depth: 2
+  pdf_document:
+    number_sections: true
+    df_print: "kable"
 ---
 ```
 
@@ -499,3 +500,4 @@ R Markdown allows you to focus on generating content & doing your analysis witho
 * [R Intro Course developed by Monash Bioinformatics Platform](https://monashdatafluency.github.io/r-intro-2/)
 * [Advanced R course developed by MBP](https://monashbioinformaticsplatform.github.io/r-more/)
 * [Reproducible Research in R developed by MBP](https://monashdatafluency.github.io/r-rep-res/)
+* [Markdown syntax guide](https://daringfireball.net/projects/markdown/syntax)

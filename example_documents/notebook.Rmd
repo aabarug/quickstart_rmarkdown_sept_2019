@@ -3,6 +3,8 @@ title: "Playing with domestic airline perfomance data"
 author: "Kirill"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
+  pdf_document:
+    
   html_notebook:
     df_print: paged
     code_folding: "hide"
