@@ -1,0 +1,37 @@
+Route,Departing_Port,Arriving_Port,Airline,Month,Sectors_Scheduled,Sectors_Flown,Cancellations,Departures_On_Time,Arrivals_On_Time,Departures_Delayed,Arrivals_Delayed,Year,Month_Num
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Jan,31,30,1,26,25,4,5,2008,1
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Jan,90,89,1,79,73,10,16,2008,1
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Jan,122,120,2,102,100,18,20,2008,1
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Feb,29,27,2,18,17,9,10,2008,2
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Feb,84,83,1,76,76,7,7,2008,2
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Feb,89,87,2,72,73,15,14,2008,2
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Mar,31,29,2,28,26,1,3,2008,3
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Mar,88,87,1,72,68,15,19,2008,3
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Mar,93,93,0,77,75,16,18,2008,3
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Apr,30,29,1,24,22,5,7,2008,4
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Apr,86,86,0,77,78,9,8,2008,4
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Apr,90,90,0,66,58,24,32,2008,4
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,May,31,31,0,26,24,5,7,2008,5
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,May,88,88,0,79,76,9,12,2008,5
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,May,97,96,1,82,78,14,18,2008,5
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Jun,30,30,0,21,21,9,9,2008,6
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Jun,86,85,1,71,60,14,25,2008,6
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Jun,93,84,9,59,56,25,28,2008,6
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Jul,26,25,1,14,13,11,12,2008,7
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Jul,89,89,0,69,67,20,22,2008,7
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Jul,93,92,1,55,54,37,38,2008,7
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Aug,27,27,0,22,24,5,3,2008,8
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Aug,88,88,0,73,72,15,16,2008,8
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Aug,102,100,2,66,67,34,33,2008,8
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Sep,26,26,0,15,21,11,5,2008,9
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Sep,86,86,0,77,76,9,10,2008,9
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Sep,120,120,0,79,91,41,29,2008,9
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Oct,27,27,0,18,21,9,6,2008,10
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Oct,89,89,0,73,76,16,13,2008,10
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Oct,121,120,1,90,100,30,20,2008,10
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Nov,30,30,0,19,24,11,6,2008,11
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Nov,85,85,0,74,80,11,5,2008,11
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Nov,115,115,0,72,85,43,30,2008,11
+Adelaide-Brisbane,Adelaide,Brisbane,Jetstar,Dec,31,31,0,22,27,9,4,2008,12
+Adelaide-Brisbane,Adelaide,Brisbane,Qantas,Dec,90,90,0,82,86,8,4,2008,12
+Adelaide-Brisbane,Adelaide,Brisbane,Virgin Australia,Dec,125,122,3,82,95,40,27,2008,12
