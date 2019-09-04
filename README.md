@@ -5,7 +5,12 @@ If you'd like to follow along, create an account on RStudio Connect and use the 
 https://rstudio.cloud/project/481772
 
 Slides:
+
 https://bioinformatics3.erc.monash.edu/rsconnect/content/55/quickstart.html#1
+
+R Notebook:
+
+https://bioinformatics3.erc.monash.edu/rsconnect/content/58/notebook.nb.html
 
 
 Meetup event
