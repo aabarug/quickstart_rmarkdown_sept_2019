@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>A Quickstart Guide to Data Analysis with R/R Markdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Adele Barugahare @technadele" />
+    <link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+    <script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+    <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-1.11.3/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# A Quickstart Guide to Data Analysis with R/R Markdown
+## <a href="https://bit.ly/2lyGAqr" class="uri">https://bit.ly/2lyGAqr</a>
+### Adele Barugahare<br><span class="citation">@technadele</span>
+### 27/08/2019
+
+---
+
+
+
+
+
+
+---
+class: center, middle
+
+## In This Talk
+
+&lt;img src="images/data_science_pipeline_focus.png" width="4291" /&gt;
+
+Will walk you through these steps with a dataset
+
+---
+## My Background
+
+--
+
+&lt;img src="images/germline.png" width="1835" style="display: block; margin: auto;" /&gt;
+
+Orignally a worm biologist, now bioinformatician @ Monash Bioinformatics Platform, more recently R-Ladies Melbourne organiser
+
+
+--
+This talk can be considered 'Most Useful Things Worm Adele Would Have Liked to Have Known When Starting Out in R'
+
+
+---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/500px-R_logo.svg.png)
+background-size: 50%
+background-position: 50% 50%
+
+---
+## R &amp; Things I Like About It
+
+Programming language for statistical computing and graphics
+
+Has lots of plotting functionality and well geared towards data analysis out of box with in-built statistical tests
+
+[Well developed ecosystem](https://www.rstudio.com/products/rpackages/) of software packages that further expands base R for analysis, project management, visualisation, document generation, etc
+
+Continous active development
+
+Thorough documentation
+
+---
+## R Data Analysis Toolbox
+
+* Tidyverse - `an opinionated collection of R packages designed for data science`: ggplot2, dplyr, magrittr, tidyr, readr, etc
+  - ggplot2 - extensive plotting package
+* Shiny - build interactive web applications/dashboards
+* R Markdown - document generation
+
+Tabular data is represented as data-frames - in-built class
+
+&lt;img src="images/toolbox.png" width="50%" height="40%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Tidyverse
+
+* 'Modern' way of writing R and geared at data science
+* Fixes up some quicky behaviour from base R
+* Improved data-frames - tibbles
+
+Tidy data:
+
+1. Each variable is in a column.
+2. Each observation is a row.
+3. Each value is a cell.
+
+&lt;img src="images/tidy_data.png" width="90%" /&gt;
+
+
+---
+
+## dplyr
+
+* is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges
+* each verb takes a data frame as input and returns a modified version of it
+* the idea is that complex operations can be performed by stringing together a series of simpler operations in a pipeline.
+
+```
+input       +--------+        +--------+        +--------+      result
+data   %&gt;%  |  verb  |  %&gt;%   |  verb  |  %&gt;%   |  verb  |  -&gt;  data
+frame       +--------+        +--------+        +--------+      frame
+```
+
+`%&gt;%` - Pipe symbol that passes output from one function to another (Magrittr package)
+
+&lt;img src="images/waterfall.gif" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## dplyr
+
+* mutate() adds new variables that are functions of existing variables
+* select() picks columns based on their names
+* filter() picks rows based on their values
+* summarise() reduces multiple values down to a single summary
+* arrange() changes the ordering of the rows
+
+---
+class: center, middle
+
+`Dataset` &gt; Manipulate to extract information &gt; Plot &gt; Communicate
+
+---
+
+
+
+The dataset:
+
+Australian domestic airlines on time dataset with information from 2004 to 2019 - 80615 rows and 14 columns from http://data.gov.au/
+
+
+```r
+head(df, 50)
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["Route"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Departing_Port"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Arriving_Port"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Airline"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Month"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Sectors_Scheduled"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Sectors_Flown"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Cancellations"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Departures_On_Time"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Arrivals_On_Time"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Departures_Delayed"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Arrivals_Delayed"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Year"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["Month_Num"],"name":[14],"type":["dbl"],"align":["right"]}],"data":[{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"All Airlines","5":"37987","6":"155","7":"155","8":"0","9":"123","10":"120","11":"32","12":"35","13":"2004","14":"1"},{"1":"Adelaide-Canberra","2":"Adelaide","3":"Canberra","4":"All Airlines","5":"37987","6":"75","7":"75","8":"0","9":"72","10":"72","11":"3","12":"3","13":"2004","14":"1"},{"1":"Adelaide-Gold Coast","2":"Adelaide","3":"Gold Coast","4":"All Airlines","5":"37987","6":"40","7":"40","8":"0","9":"36","10":"35","11":"4","12":"5","13":"2004","14":"1"},{"1":"Adelaide-Melbourne","2":"Adelaide","3":"Melbourne","4":"All Airlines","5":"37987","6":"550","7":"548","8":"2","9":"478","10":"487","11":"70","12":"61","13":"2004","14":"1"},{"1":"Adelaide-Perth","2":"Adelaide","3":"Perth","4":"All Airlines","5":"37987","6":"191","7":"191","8":"0","9":"169","10":"168","11":"22","12":"23","13":"2004","14":"1"},{"1":"Adelaide-Sydney","2":"Adelaide","3":"Sydney","4":"All Airlines","5":"37987","6":"486","7":"485","8":"1","9":"456","10":"465","11":"29","12":"20","13":"2004","14":"1"},{"1":"Albury-Sydney","2":"Albury","3":"Sydney","4":"All Airlines","5":"37987","6":"168","7":"168","8":"0","9":"148","10":"146","11":"20","12":"22","13":"2004","14":"1"},{"1":"Alice Springs-Sydney","2":"Alice Springs","3":"Sydney","4":"All Airlines","5":"37987","6":"63","7":"63","8":"0","9":"61","10":"63","11":"2","12":"0","13":"2004","14":"1"},{"1":"All Ports-All Ports","2":"All Ports","3":"All Ports","4":"All Airlines","5":"37987","6":"31913","7":"31685","8":"228","9":"27599","10":"27475","11":"4086","12":"4210","13":"2004","14":"1"},{"1":"Brisbane-Adelaide","2":"Brisbane","3":"Adelaide","4":"All Airlines","5":"37987","6":"155","7":"155","8":"0","9":"123","10":"140","11":"32","12":"15","13":"2004","14":"1"},{"1":"Brisbane-Cairns","2":"Brisbane","3":"Cairns","4":"All Airlines","5":"37987","6":"317","7":"315","8":"2","9":"265","10":"286","11":"50","12":"29","13":"2004","14":"1"},{"1":"Brisbane-Canberra","2":"Brisbane","3":"Canberra","4":"All Airlines","5":"37987","6":"185","7":"184","8":"1","9":"163","10":"164","11":"21","12":"20","13":"2004","14":"1"},{"1":"Brisbane-Darwin","2":"Brisbane","3":"Darwin","4":"All Airlines","5":"37987","6":"77","7":"77","8":"0","9":"57","10":"65","11":"20","12":"12","13":"2004","14":"1"},{"1":"Brisbane-Mackay","2":"Brisbane","3":"Mackay","4":"All Airlines","5":"37987","6":"175","7":"174","8":"1","9":"155","10":"154","11":"19","12":"20","13":"2004","14":"1"},{"1":"Brisbane-Melbourne","2":"Brisbane","3":"Melbourne","4":"All Airlines","5":"37987","6":"797","7":"792","8":"5","9":"666","10":"686","11":"126","12":"106","13":"2004","14":"1"},{"1":"Brisbane-Perth","2":"Brisbane","3":"Perth","4":"All Airlines","5":"37987","6":"93","7":"93","8":"0","9":"68","10":"73","11":"25","12":"20","13":"2004","14":"1"},{"1":"Brisbane-Rockhampton","2":"Brisbane","3":"Rockhampton","4":"All Airlines","5":"37987","6":"191","7":"191","8":"0","9":"177","10":"172","11":"14","12":"19","13":"2004","14":"1"},{"1":"Brisbane-Sydney","2":"Brisbane","3":"Sydney","4":"All Airlines","5":"37987","6":"1158","7":"1146","8":"12","9":"970","10":"991","11":"177","12":"156","13":"2004","14":"1"},{"1":"Brisbane-Townsville","2":"Brisbane","3":"Townsville","4":"All Airlines","5":"37987","6":"216","7":"216","8":"0","9":"169","10":"166","11":"47","12":"50","13":"2004","14":"1"},{"1":"Broome-Perth","2":"Broome","3":"Perth","4":"All Airlines","5":"37987","6":"83","7":"82","8":"1","9":"77","10":"81","11":"5","12":"1","13":"2004","14":"1"},{"1":"Burnie-Melbourne","2":"Burnie","3":"Melbourne","4":"All Airlines","5":"37987","6":"184","7":"181","8":"3","9":"157","10":"146","11":"24","12":"35","13":"2004","14":"1"},{"1":"Cairns-Brisbane","2":"Cairns","3":"Brisbane","4":"All Airlines","5":"37987","6":"314","7":"311","8":"3","9":"287","10":"280","11":"24","12":"31","13":"2004","14":"1"},{"1":"Cairns-Melbourne","2":"Cairns","3":"Melbourne","4":"All Airlines","5":"37987","6":"103","7":"103","8":"0","9":"77","10":"83","11":"26","12":"20","13":"2004","14":"1"},{"1":"Cairns-Sydney","2":"Cairns","3":"Sydney","4":"All Airlines","5":"37987","6":"207","7":"206","8":"1","9":"197","10":"198","11":"9","12":"8","13":"2004","14":"1"},{"1":"Canberra-Adelaide","2":"Canberra","3":"Adelaide","4":"All Airlines","5":"37987","6":"78","7":"78","8":"0","9":"71","10":"75","11":"7","12":"3","13":"2004","14":"1"},{"1":"Canberra-Brisbane","2":"Canberra","3":"Brisbane","4":"All Airlines","5":"37987","6":"185","7":"184","8":"1","9":"179","10":"173","11":"5","12":"11","13":"2004","14":"1"},{"1":"Canberra-Melbourne","2":"Canberra","3":"Melbourne","4":"All Airlines","5":"37987","6":"338","7":"335","8":"3","9":"314","10":"303","11":"21","12":"32","13":"2004","14":"1"},{"1":"Canberra-Sydney","2":"Canberra","3":"Sydney","4":"All Airlines","5":"37987","6":"592","7":"586","8":"6","9":"529","10":"521","11":"58","12":"66","13":"2004","14":"1"},{"1":"Coffs Harbour-Sydney","2":"Coffs Harbour","3":"Sydney","4":"All Airlines","5":"37987","6":"194","7":"190","8":"4","9":"163","10":"158","11":"27","12":"32","13":"2004","14":"1"},{"1":"Darwin-Brisbane","2":"Darwin","3":"Brisbane","4":"All Airlines","5":"37987","6":"77","7":"77","8":"0","9":"70","10":"62","11":"7","12":"15","13":"2004","14":"1"},{"1":"Darwin-Sydney","2":"Darwin","3":"Sydney","4":"All Airlines","5":"37987","6":"53","7":"53","8":"0","9":"42","10":"45","11":"11","12":"8","13":"2004","14":"1"},{"1":"Devonport-Melbourne","2":"Devonport","3":"Melbourne","4":"All Airlines","5":"37987","6":"229","7":"226","8":"3","9":"202","10":"191","11":"24","12":"35","13":"2004","14":"1"},{"1":"Dubbo-Sydney","2":"Dubbo","3":"Sydney","4":"All Airlines","5":"37987","6":"160","7":"160","8":"0","9":"146","10":"146","11":"14","12":"14","13":"2004","14":"1"},{"1":"Gold Coast-Adelaide","2":"Gold Coast","3":"Adelaide","4":"All Airlines","5":"37987","6":"40","7":"40","8":"0","9":"35","10":"35","11":"5","12":"5","13":"2004","14":"1"},{"1":"Gold Coast-Melbourne","2":"Gold Coast","3":"Melbourne","4":"All Airlines","5":"37987","6":"279","7":"278","8":"1","9":"217","10":"230","11":"61","12":"48","13":"2004","14":"1"},{"1":"Gold Coast-Sydney","2":"Gold Coast","3":"Sydney","4":"All Airlines","5":"37987","6":"451","7":"448","8":"3","9":"375","10":"396","11":"73","12":"52","13":"2004","14":"1"},{"1":"Hobart-Melbourne","2":"Hobart","3":"Melbourne","4":"All Airlines","5":"37987","6":"406","7":"404","8":"2","9":"340","10":"325","11":"64","12":"79","13":"2004","14":"1"},{"1":"Kalgoorlie-Perth","2":"Kalgoorlie","3":"Perth","4":"All Airlines","5":"37987","6":"103","7":"103","8":"0","9":"96","10":"98","11":"7","12":"5","13":"2004","14":"1"},{"1":"Launceston-Melbourne","2":"Launceston","3":"Melbourne","4":"All Airlines","5":"37987","6":"255","7":"255","8":"0","9":"216","10":"224","11":"39","12":"31","13":"2004","14":"1"},{"1":"Mackay-Brisbane","2":"Mackay","3":"Brisbane","4":"All Airlines","5":"37987","6":"175","7":"174","8":"1","9":"161","10":"158","11":"13","12":"16","13":"2004","14":"1"},{"1":"Melbourne-Adelaide","2":"Melbourne","3":"Adelaide","4":"All Airlines","5":"37987","6":"554","7":"553","8":"1","9":"476","10":"480","11":"77","12":"73","13":"2004","14":"1"},{"1":"Melbourne-Brisbane","2":"Melbourne","3":"Brisbane","4":"All Airlines","5":"37987","6":"797","7":"793","8":"4","9":"678","10":"662","11":"115","12":"131","13":"2004","14":"1"},{"1":"Melbourne-Burnie","2":"Melbourne","3":"Burnie","4":"All Airlines","5":"37987","6":"184","7":"182","8":"2","9":"156","10":"157","11":"26","12":"25","13":"2004","14":"1"},{"1":"Melbourne-Cairns","2":"Melbourne","3":"Cairns","4":"All Airlines","5":"37987","6":"103","7":"103","8":"0","9":"86","10":"87","11":"17","12":"16","13":"2004","14":"1"},{"1":"Melbourne-Canberra","2":"Melbourne","3":"Canberra","4":"All Airlines","5":"37987","6":"315","7":"311","8":"4","9":"281","10":"281","11":"30","12":"30","13":"2004","14":"1"},{"1":"Melbourne-Devonport","2":"Melbourne","3":"Devonport","4":"All Airlines","5":"37987","6":"229","7":"227","8":"2","9":"200","10":"200","11":"27","12":"27","13":"2004","14":"1"},{"1":"Melbourne-Gold Coast","2":"Melbourne","3":"Gold Coast","4":"All Airlines","5":"37987","6":"279","7":"279","8":"0","9":"225","10":"214","11":"54","12":"65","13":"2004","14":"1"},{"1":"Melbourne-Hobart","2":"Melbourne","3":"Hobart","4":"All Airlines","5":"37987","6":"403","7":"401","8":"2","9":"327","10":"336","11":"74","12":"65","13":"2004","14":"1"},{"1":"Melbourne-Launceston","2":"Melbourne","3":"Launceston","4":"All Airlines","5":"37987","6":"255","7":"255","8":"0","9":"206","10":"214","11":"49","12":"41","13":"2004","14":"1"},{"1":"Melbourne-Mildura","2":"Melbourne","3":"Mildura","4":"All Airlines","5":"37987","6":"172","7":"172","8":"0","9":"153","10":"153","11":"19","12":"19","13":"2004","14":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: center, middle
+
+Dataset &gt; `Manipulate to extract information` &gt; Plot &gt; Communicate
+
+---
+Use dplyr to extract information
+
+
+```r
+df %&gt;% 
+  filter(Airline != "All Airlines", Route != "All Ports-All Ports") %&gt;% 
+  group_by(Route, Airline) %&gt;% summarise(n = n()) %&gt;% head(20)
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["Route"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Airline"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"Adelaide-Alice Springs","2":"Qantas","3":"70"},{"1":"Adelaide-Alice Springs","2":"Tigerair Australia","3":"11"},{"1":"Adelaide-Alice Springs","2":"Virgin Australia","3":"59"},{"1":"Adelaide-Alice Springs","2":"Virgin Australia Regional Airlines","3":"17"},{"1":"Adelaide-Brisbane","2":"Jetstar","3":"162"},{"1":"Adelaide-Brisbane","2":"Qantas","3":"187"},{"1":"Adelaide-Brisbane","2":"QantasLink","3":"32"},{"1":"Adelaide-Brisbane","2":"Tigerair Australia","3":"73"},{"1":"Adelaide-Brisbane","2":"Virgin Australia","3":"187"},{"1":"Adelaide-Canberra","2":"Qantas","3":"187"},{"1":"Adelaide-Canberra","2":"QantasLink","3":"41"},{"1":"Adelaide-Canberra","2":"Tigerair Australia","3":"11"},{"1":"Adelaide-Canberra","2":"Virgin Australia","3":"187"},{"1":"Adelaide-Gold Coast","2":"Jetstar","3":"174"},{"1":"Adelaide-Gold Coast","2":"Qantas","3":"13"},{"1":"Adelaide-Gold Coast","2":"Tigerair Australia","3":"21"},{"1":"Adelaide-Gold Coast","2":"Virgin Australia","3":"187"},{"1":"Adelaide-Melbourne","2":"Jetstar","3":"127"},{"1":"Adelaide-Melbourne","2":"Qantas","3":"187"},{"1":"Adelaide-Melbourne","2":"QantasLink","3":"53"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+Extract route 'Adelaide-Brisbane' in the year 2008 &amp; fix up the month column
+
+
+```r
+df2 &lt;- df %&gt;%
+  filter(Airline != "All Airlines", Route == "Adelaide-Brisbane", Year == 2008) %&gt;% 
+  mutate(Month = lubridate::month(x = Month_Num, label = T))
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["Route"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Departing_Port"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Arriving_Port"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Airline"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Month"],"name":[5],"type":["ord"],"align":["right"]},{"label":["Sectors_Scheduled"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Sectors_Flown"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Cancellations"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Departures_On_Time"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Arrivals_On_Time"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Departures_Delayed"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Arrivals_Delayed"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Year"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["Month_Num"],"name":[14],"type":["dbl"],"align":["right"]}],"data":[{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Jan","6":"31","7":"30","8":"1","9":"26","10":"25","11":"4","12":"5","13":"2008","14":"1"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Jan","6":"90","7":"89","8":"1","9":"79","10":"73","11":"10","12":"16","13":"2008","14":"1"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Jan","6":"122","7":"120","8":"2","9":"102","10":"100","11":"18","12":"20","13":"2008","14":"1"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Feb","6":"29","7":"27","8":"2","9":"18","10":"17","11":"9","12":"10","13":"2008","14":"2"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Feb","6":"84","7":"83","8":"1","9":"76","10":"76","11":"7","12":"7","13":"2008","14":"2"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Feb","6":"89","7":"87","8":"2","9":"72","10":"73","11":"15","12":"14","13":"2008","14":"2"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Mar","6":"31","7":"29","8":"2","9":"28","10":"26","11":"1","12":"3","13":"2008","14":"3"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Mar","6":"88","7":"87","8":"1","9":"72","10":"68","11":"15","12":"19","13":"2008","14":"3"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Mar","6":"93","7":"93","8":"0","9":"77","10":"75","11":"16","12":"18","13":"2008","14":"3"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Apr","6":"30","7":"29","8":"1","9":"24","10":"22","11":"5","12":"7","13":"2008","14":"4"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Apr","6":"86","7":"86","8":"0","9":"77","10":"78","11":"9","12":"8","13":"2008","14":"4"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Apr","6":"90","7":"90","8":"0","9":"66","10":"58","11":"24","12":"32","13":"2008","14":"4"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"May","6":"31","7":"31","8":"0","9":"26","10":"24","11":"5","12":"7","13":"2008","14":"5"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"May","6":"88","7":"88","8":"0","9":"79","10":"76","11":"9","12":"12","13":"2008","14":"5"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"May","6":"97","7":"96","8":"1","9":"82","10":"78","11":"14","12":"18","13":"2008","14":"5"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Jun","6":"30","7":"30","8":"0","9":"21","10":"21","11":"9","12":"9","13":"2008","14":"6"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Jun","6":"86","7":"85","8":"1","9":"71","10":"60","11":"14","12":"25","13":"2008","14":"6"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Jun","6":"93","7":"84","8":"9","9":"59","10":"56","11":"25","12":"28","13":"2008","14":"6"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Jul","6":"26","7":"25","8":"1","9":"14","10":"13","11":"11","12":"12","13":"2008","14":"7"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Jul","6":"89","7":"89","8":"0","9":"69","10":"67","11":"20","12":"22","13":"2008","14":"7"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Jul","6":"93","7":"92","8":"1","9":"55","10":"54","11":"37","12":"38","13":"2008","14":"7"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Aug","6":"27","7":"27","8":"0","9":"22","10":"24","11":"5","12":"3","13":"2008","14":"8"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Aug","6":"88","7":"88","8":"0","9":"73","10":"72","11":"15","12":"16","13":"2008","14":"8"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Aug","6":"102","7":"100","8":"2","9":"66","10":"67","11":"34","12":"33","13":"2008","14":"8"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Sep","6":"26","7":"26","8":"0","9":"15","10":"21","11":"11","12":"5","13":"2008","14":"9"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Sep","6":"86","7":"86","8":"0","9":"77","10":"76","11":"9","12":"10","13":"2008","14":"9"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Sep","6":"120","7":"120","8":"0","9":"79","10":"91","11":"41","12":"29","13":"2008","14":"9"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Jetstar","5":"Oct","6":"27","7":"27","8":"0","9":"18","10":"21","11":"9","12":"6","13":"2008","14":"10"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Qantas","5":"Oct","6":"89","7":"89","8":"0","9":"73","10":"76","11":"16","12":"13","13":"2008","14":"10"},{"1":"Adelaide-Brisbane","2":"Adelaide","3":"Brisbane","4":"Virgin Australia","5":"Oct","6":"121","7":"120","8":"1","9":"90","10":"100","11":"30","12":"20","13":"2008","14":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: center, middle
+
+Dataset &gt; Manipulate to extract information &gt; `Plot` &gt; Communicate
+
+---
+## ggplot2
+
+Implements the grammar of graphics, a coherent system for describing and building graphs
+
+Takes a data-frame input, describes which columns maps to which aethestics and then builds a plot by layering 'geoms'.
+
+
+```r
+ggplot(df, aes(x = column_A_df, y = column_B_df, color = column_C_df, 
+  etc...)) +
+  geom_point() + geom_boxplot() + geom_etc() +
+  geom_line(new_data, aes(color = "blue")) + 
+  theme( modifications_to_plot_appearance )
+```
+
+Geoms define the type of plot the data should be displayed as.
+
+The top level aethestics &amp; data will be passed on to all geoms but can be overriden by specificing new data/aethestics to that specific geom
+
+---
+
+
+```r
+gp &lt;- ggplot(df2, aes(x = Month, y = Arrivals_On_Time, 
+                      group = Airline, color = Airline))
+gp
+```
+--
+&lt;img src="images/ggplot_base.png" width="3253" /&gt;
+
+
+---
+
+```r
+gp &lt;- gp + geom_line()
+gp
+```
+--
+&lt;img src="images/ggplot_layer1.png" width="3253" /&gt;
+
+---
+
+```r
+gp &lt;- gp + geom_point(aes(y = Departures_Delayed, shape = Airline))
+gp
+```
+--
+&lt;img src="images/ggplot_layer2.png" width="3253" /&gt;
+
+---
+
+```r
+gp &lt;- gp + geom_point(aes(y = Sectors_Flown), data = 
+          filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", 
+          Year == 2008), color = "black")
+gp
+```
+--
+&lt;img src="images/ggplot_layer3.png" width="3253" /&gt;
+
+---
+
+```r
+gp &lt;- gp + theme_bw() + xlab("")
+  ylab("Number of arrivals on time") 
+  ggtitle("Arrivals on time on Adelaide-Brisbane route in the year 2008 per airline")
+gp
+```
+
+&lt;img src="images/ggplot_final.png" width="3253" /&gt;
+
+---
+class: center, middle
+## Packages For Interactivity
+
+---
+### Plotly 
+Create interactive plots directly with `plot_ly()` function
+--
+
+```r
+df2 %&gt;% group_by(Airline) %&gt;% 
+  plotly::plot_ly(x = ~Month, y = ~Arrivals_On_Time, color=~Airline,
+                type = 'scatter', mode = 'lines')
+```
+
+<div id="htmlwidget-543b04369a52c0a37ece" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-543b04369a52c0a37ece">{"x":{"visdat":{"11382b369fa9":["function () ","plotlyVisDat"]},"cur_data":"11382b369fa9","attrs":{"11382b369fa9":{"x":{},"y":{},"mode":"lines","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Month","type":"category","categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Arrivals_On_Time"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[25,17,26,22,24,21,13,24,21,21,24,27],"mode":"lines","type":"scatter","name":"Jetstar","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[73,76,68,78,76,60,67,72,76,76,80,86],"mode":"lines","type":"scatter","name":"Qantas","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"y":[100,73,75,58,78,56,54,67,91,100,85,95],"mode":"lines","type":"scatter","name":"Virgin Australia","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+---
+Or use it as a wrapper to a `ggplot` object with `ggplotly`
+
+
+
+
+
+```r
+plotly::ggplotly(gp)
+```
+
+<div id="htmlwidget-871dedadec4240ffd19c" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-871dedadec4240ffd19c">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[25,17,26,22,24,21,13,24,21,21,24,27],"text":["Month: Jan<br />Arrivals_On_Time:  25<br />Airline: Jetstar<br />Airline: Jetstar","Month: Feb<br />Arrivals_On_Time:  17<br />Airline: Jetstar<br />Airline: Jetstar","Month: Mar<br />Arrivals_On_Time:  26<br />Airline: Jetstar<br />Airline: Jetstar","Month: Apr<br />Arrivals_On_Time:  22<br />Airline: Jetstar<br />Airline: Jetstar","Month: May<br />Arrivals_On_Time:  24<br />Airline: Jetstar<br />Airline: Jetstar","Month: Jun<br />Arrivals_On_Time:  21<br />Airline: Jetstar<br />Airline: Jetstar","Month: Jul<br />Arrivals_On_Time:  13<br />Airline: Jetstar<br />Airline: Jetstar","Month: Aug<br />Arrivals_On_Time:  24<br />Airline: Jetstar<br />Airline: Jetstar","Month: Sep<br />Arrivals_On_Time:  21<br />Airline: Jetstar<br />Airline: Jetstar","Month: Oct<br />Arrivals_On_Time:  21<br />Airline: Jetstar<br />Airline: Jetstar","Month: Nov<br />Arrivals_On_Time:  24<br />Airline: Jetstar<br />Airline: Jetstar","Month: Dec<br />Arrivals_On_Time:  27<br />Airline: Jetstar<br />Airline: Jetstar"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"(Jetstar,1)","legendgroup":"(Jetstar,1)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[73,76,68,78,76,60,67,72,76,76,80,86],"text":["Month: Jan<br />Arrivals_On_Time:  73<br />Airline: Qantas<br />Airline: Qantas","Month: Feb<br />Arrivals_On_Time:  76<br />Airline: Qantas<br />Airline: Qantas","Month: Mar<br />Arrivals_On_Time:  68<br />Airline: Qantas<br />Airline: Qantas","Month: Apr<br />Arrivals_On_Time:  78<br />Airline: Qantas<br />Airline: Qantas","Month: May<br />Arrivals_On_Time:  76<br />Airline: Qantas<br />Airline: Qantas","Month: Jun<br />Arrivals_On_Time:  60<br />Airline: Qantas<br />Airline: Qantas","Month: Jul<br />Arrivals_On_Time:  67<br />Airline: Qantas<br />Airline: Qantas","Month: Aug<br />Arrivals_On_Time:  72<br />Airline: Qantas<br />Airline: Qantas","Month: Sep<br />Arrivals_On_Time:  76<br />Airline: Qantas<br />Airline: Qantas","Month: Oct<br />Arrivals_On_Time:  76<br />Airline: Qantas<br />Airline: Qantas","Month: Nov<br />Arrivals_On_Time:  80<br />Airline: Qantas<br />Airline: Qantas","Month: Dec<br />Arrivals_On_Time:  86<br />Airline: Qantas<br />Airline: Qantas"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"(Qantas,1)","legendgroup":"(Qantas,1)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[100,73,75,58,78,56,54,67,91,100,85,95],"text":["Month: Jan<br />Arrivals_On_Time: 100<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Feb<br />Arrivals_On_Time:  73<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Mar<br />Arrivals_On_Time:  75<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Apr<br />Arrivals_On_Time:  58<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: May<br />Arrivals_On_Time:  78<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Jun<br />Arrivals_On_Time:  56<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Jul<br />Arrivals_On_Time:  54<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Aug<br />Arrivals_On_Time:  67<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Sep<br />Arrivals_On_Time:  91<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Oct<br />Arrivals_On_Time: 100<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Nov<br />Arrivals_On_Time:  85<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Month: Dec<br />Arrivals_On_Time:  95<br />Airline: Virgin Australia<br />Airline: Virgin Australia"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"(Virgin Australia,1)","legendgroup":"(Virgin Australia,1)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[4,9,1,5,5,9,11,5,11,9,11,9],"text":["Departures_Delayed:  4<br />Airline: Jetstar<br />Month: Jan<br />Arrivals_On_Time:  4<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  9<br />Airline: Jetstar<br />Month: Feb<br />Arrivals_On_Time:  9<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  1<br />Airline: Jetstar<br />Month: Mar<br />Arrivals_On_Time:  1<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  5<br />Airline: Jetstar<br />Month: Apr<br />Arrivals_On_Time:  5<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  5<br />Airline: Jetstar<br />Month: May<br />Arrivals_On_Time:  5<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  9<br />Airline: Jetstar<br />Month: Jun<br />Arrivals_On_Time:  9<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed: 11<br />Airline: Jetstar<br />Month: Jul<br />Arrivals_On_Time: 11<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  5<br />Airline: Jetstar<br />Month: Aug<br />Arrivals_On_Time:  5<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed: 11<br />Airline: Jetstar<br />Month: Sep<br />Arrivals_On_Time: 11<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  9<br />Airline: Jetstar<br />Month: Oct<br />Arrivals_On_Time:  9<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed: 11<br />Airline: Jetstar<br />Month: Nov<br />Arrivals_On_Time: 11<br />Airline: Jetstar<br />Airline: Jetstar","Departures_Delayed:  9<br />Airline: Jetstar<br />Month: Dec<br />Arrivals_On_Time:  9<br />Airline: Jetstar<br />Airline: Jetstar"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Jetstar","legendgroup":"Jetstar","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[10,7,15,9,9,14,20,15,9,16,11,8],"text":["Departures_Delayed: 10<br />Airline: Qantas<br />Month: Jan<br />Arrivals_On_Time: 10<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed:  7<br />Airline: Qantas<br />Month: Feb<br />Arrivals_On_Time:  7<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 15<br />Airline: Qantas<br />Month: Mar<br />Arrivals_On_Time: 15<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed:  9<br />Airline: Qantas<br />Month: Apr<br />Arrivals_On_Time:  9<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed:  9<br />Airline: Qantas<br />Month: May<br />Arrivals_On_Time:  9<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 14<br />Airline: Qantas<br />Month: Jun<br />Arrivals_On_Time: 14<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 20<br />Airline: Qantas<br />Month: Jul<br />Arrivals_On_Time: 20<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 15<br />Airline: Qantas<br />Month: Aug<br />Arrivals_On_Time: 15<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed:  9<br />Airline: Qantas<br />Month: Sep<br />Arrivals_On_Time:  9<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 16<br />Airline: Qantas<br />Month: Oct<br />Arrivals_On_Time: 16<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed: 11<br />Airline: Qantas<br />Month: Nov<br />Arrivals_On_Time: 11<br />Airline: Qantas<br />Airline: Qantas","Departures_Delayed:  8<br />Airline: Qantas<br />Month: Dec<br />Arrivals_On_Time:  8<br />Airline: Qantas<br />Airline: Qantas"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":5.66929133858268,"symbol":"triangle-up","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"Qantas","legendgroup":"Qantas","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[18,15,16,24,14,25,37,34,41,30,43,40],"text":["Departures_Delayed: 18<br />Airline: Virgin Australia<br />Month: Jan<br />Arrivals_On_Time: 18<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 15<br />Airline: Virgin Australia<br />Month: Feb<br />Arrivals_On_Time: 15<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 16<br />Airline: Virgin Australia<br />Month: Mar<br />Arrivals_On_Time: 16<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 24<br />Airline: Virgin Australia<br />Month: Apr<br />Arrivals_On_Time: 24<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 14<br />Airline: Virgin Australia<br />Month: May<br />Arrivals_On_Time: 14<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 25<br />Airline: Virgin Australia<br />Month: Jun<br />Arrivals_On_Time: 25<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 37<br />Airline: Virgin Australia<br />Month: Jul<br />Arrivals_On_Time: 37<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 34<br />Airline: Virgin Australia<br />Month: Aug<br />Arrivals_On_Time: 34<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 41<br />Airline: Virgin Australia<br />Month: Sep<br />Arrivals_On_Time: 41<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 30<br />Airline: Virgin Australia<br />Month: Oct<br />Arrivals_On_Time: 30<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 43<br />Airline: Virgin Australia<br />Month: Nov<br />Arrivals_On_Time: 43<br />Airline: Virgin Australia<br />Airline: Virgin Australia","Departures_Delayed: 40<br />Airline: Virgin Australia<br />Month: Dec<br />Arrivals_On_Time: 40<br />Airline: Virgin Australia<br />Airline: Virgin Australia"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":5.66929133858268,"symbol":"square","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"Virgin Australia","legendgroup":"Virgin Australia","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[89,83,87,86,88,85,89,88,86,89,85,90],"text":["Sectors_Flown: 89<br />Month: Jan<br />Arrivals_On_Time: 89<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 83<br />Month: Feb<br />Arrivals_On_Time: 83<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 87<br />Month: Mar<br />Arrivals_On_Time: 87<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 86<br />Month: Apr<br />Arrivals_On_Time: 86<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 88<br />Month: May<br />Arrivals_On_Time: 88<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 85<br />Month: Jun<br />Arrivals_On_Time: 85<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 89<br />Month: Jul<br />Arrivals_On_Time: 89<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 88<br />Month: Aug<br />Arrivals_On_Time: 88<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 86<br />Month: Sep<br />Arrivals_On_Time: 86<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 89<br />Month: Oct<br />Arrivals_On_Time: 89<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 85<br />Month: Nov<br />Arrivals_On_Time: 85<br />Airline: Qantas<br />Airline: black","Sectors_Flown: 90<br />Month: Dec<br />Arrivals_On_Time: 90<br />Airline: Qantas<br />Airline: black"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.3059360730594,"r":7.30593607305936,"b":22.648401826484,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,12.6],"tickmode":"array","ticktext":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12],"categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.95,104.95],"tickmode":"array","ticktext":["0","25","50","75","100"],"tickvals":[-4.44089209850063e-16,25,50,75,100],"categoryorder":"array","categoryarray":["0","25","50","75","100"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Number of arrivals on time","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.938132733408324},"annotations":[{"text":"Airline","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"11383f5a3f85":{"x":{},"y":{},"colour":{},"type":"scatter"},"1138905c6a3":{"y":{},"shape":{},"x":{},"y.1":{},"colour":{}},"11382d66e4c9":{"y":{},"x":{},"y.1":{},"colour":{}}},"cur_data":"11383f5a3f85","visdat":{"11383f5a3f85":["function (y) ","x"],"1138905c6a3":["function (y) ","x"],"11382d66e4c9":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+## Shiny
+
+Develop web applications/dashboards through the use of pre-built widgets. 
+
+Two parts to a shiny app:
+
+
+```r
+ui &lt;- fluidPage(
+  ## Define the user interface here 
+  ## Layout of input and output widgets
+)
+server &lt;- function(input, output) {
+  #Server code to process inputs from ui, manipulate data accordingly
+  # Then send back to UI to display an output
+}
+
+# Run the app
+shinyApp(ui = ui, server = server)
+```
+
+---
+## A simple Shiny app in about 10 lines of code
+
+
+```r
+library(shiny)
+
+# Define UI for app that draws a line plot ----
+ui &lt;- fluidPage(
+    # Input: widget to select which airline to plot 
+    selectInput(inputId = "select_airline", label = h3("Select airlines"), 
+                choices = list("Jetstar", "Qantas", "Virgin Australia"), 
+                selected = "Jetstar"),
+    
+    # Output: Line plot ----
+    plotOutput(outputId = "linePlot")
+)
+```
+
+
+---
+
+
+---
+
+
+[Link to simple app](https://bioinformatics3.erc.monash.edu/rsconnect/connect/#/apps/57/access)
+
+More examples
+* [Varistran demo app](http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/)
+* [Shiny Gallery](https://shiny.rstudio.com/gallery/)
+
+---
+class: center, middle
+
+Dataset &gt; Manipulate to extract information &gt; Plot &gt; `Communicate`
+
+---
+background-image: url(images/r_env.png)
+background-size: 50%
+background-position: 50% 50%
+
+---
+## R Markdown
+
+The marriage between Markdown, a lightweight markup language and R, a programming language for statistics
+
+An R Markdown file is a plain text document that allows you to embed R code chunks + plain text notes &amp; images. 
+
+Structure:
+
+1. YAML header - The meta-data that describes the final document output
+2. Markdown section - content/body of the document - your text/notes, images, links, etc
+3. Code chunks - where the R* code goes
+
+An R Markdown file by itself is quite simple but is neatly rendered into a more complicated document type
+
+--
+*actually supports up to 52 language engines including Python, Julia, C++, MySQL, bash, etc
+
+---
+## YAML header
+
+Meta-data that controls the document that is produced, one file can output to multiple file types
+
+Different documents have different options to customise
+
+Identation is important
+
+```
+---
+title: "Rmarkdown Quickstart"
+author: "Adele Barugahare"
+date: "27/08/2019"
+output: 
+  ioslides_presentation:
+    df_print: "paged"
+  html_document:
+    df_print: "paged"
+    toc: true
+    toc_depth: 2
+---
+```
+
+---
+## Code chunks
+
+` ```{r, customise_output_with_code_chunk_options} `
+
+`#Code analysis goes here`
+
+`x &lt;- 1:10`
+
+`y &lt;- x * 2`
+
+`etc`
+
+` ``` `
+
+Code chunk options allow you to heavily customise the output of the code - is the code chunk included with the document, should the chunk run but is not displayed, or is it displayed but not run, define the display size of an image, give it a caption, etc
+
+This slideshow presentation itself is littered with silent code chunks that are not being displayed
+
+---
+.pull-left[
+Supported Documents Outputs
+
+* webpages
+* R-notebooks
+* PDFs
+* Slideshows
+* Books
+* Websites
+
+...and more created by the R community
+]
+
+.pull-right[
+Packages that further build on top of R Markdown
+
+* blogdown - combines R Markdown &amp; Hugo to create general purpose websites
+* bookdown - authoring books, thesis, sfotware manuals, etc
+* flexdashboards - HTML outputs with dashboard layouts
+* xaringan - slides shows
+]
+You can also build Shiny apps into R Markdown documents
+
+---
+## R Markdown &amp; Analysis Reproducibility
+
+Document what you've done with your data in code
+
+R Markdown can render multiple different document types from one Rmd file
+
+The more places (files) an analysis is spread across, the more work it is to keep all of it accurate and up-to-date.
+
+R Markdown allows you to focus on generating content &amp; doing your analysis without (hopefully) spending too much time fighting your document itself*
+
+--
+*you can heavily customise the file that is producing, bearing in mind, the more a document is geared towards a particular output type, the harder it is to neatly convert between formats
+
+---
+## Neat Examples
+
+* [Emi Tanaka's personal website](https://emitanaka.org/) - blogdown for website, xaringan for slides, shiny + plotly for web apps
+* [Rob Hyn](https://robjhyndman.com/)
+
+---
+## Recommended Resources For Further Learning
+
+* [R for Data Science](https://r4ds.had.co.nz/)
+* [R Markdown: The Definite Guide](https://bookdown.org/yihui/rmarkdown//)
+* [Package cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+* [R Intro Course developed by Monash Bioinformatics Platform](https://monashdatafluency.github.io/r-intro-2/)
+* [Advanced R course developed by MBP](https://monashbioinformaticsplatform.github.io/r-more/)
+* [Reproducible Research in R developed by MBP](https://monashdatafluency.github.io/r-rep-res/)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

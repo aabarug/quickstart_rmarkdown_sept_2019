@@ -1,5 +1,5 @@
 ---
-title: "R Markdown Quickstart"
+title: "A Quickstart Guide to Data Analysis with R/R Markdown"
 subtitle: "https://bit.ly/2lyGAqr"
 author: "Adele Barugahare<br>@technadele"
 date: "27/08/2019"
@@ -26,12 +26,13 @@ mono_accent_inverse(base_color = "#ccf2ff")
 ---
 class: center, middle
 
-## Quickstart guide to R/R Markdown
+## In This Talk
 
 ```{r, talk_focus}
 knitr::include_graphics("images/data_science_pipeline_focus.png")
 ```
 
+Will walk you through these steps with a dataset
 
 ---
 ## My Background
@@ -42,8 +43,10 @@ knitr::include_graphics("images/data_science_pipeline_focus.png")
 knitr::include_graphics("images/germline.png")
 ```
 
-Orignally a worm biologist, now bioinformatician @ Monash Bioinformatics Platform, recently R-Ladies Melbourne organiser
+Orignally a worm biologist, now bioinformatician @ Monash Bioinformatics Platform, more recently R-Ladies Melbourne organiser
 
+
+--
 This talk can be considered 'Most Useful Things Worm Adele Would Have Liked to Have Known When Starting Out in R'
 
 
@@ -57,8 +60,6 @@ background-position: 50% 50%
 
 Programming language for statistical computing and graphics
 
-Tabular data is represented as data-frames - in-built class
-
 Has lots of plotting functionality and well geared towards data analysis out of box with in-built statistical tests
 
 [Well developed ecosystem](https://www.rstudio.com/products/rpackages/) of software packages that further expands base R for analysis, project management, visualisation, document generation, etc
@@ -68,12 +69,14 @@ Continous active development
 Thorough documentation
 
 ---
-## Data Analysis Toolbox
+## R Data Analysis Toolbox
 
-* Tidyverse - `an opinionated collection of R packages designed for data science`: `ggplot2`, `dplyr`, magrittr, tidyr, readr, etc
+* Tidyverse - `an opinionated collection of R packages designed for data science`: ggplot2, dplyr, magrittr, tidyr, readr, etc
   - ggplot2 - extensive plotting package
 * Shiny - build interactive web applications/dashboards
-* Rmarkdown - document generation
+* R Markdown - document generation
+
+Tabular data is represented as data-frames - in-built class
 
 ```{r, toolbox_image, out.width="50%", out.height="40%", fig.align='center'}
 knitr::include_graphics("images/toolbox.png")
@@ -113,20 +116,11 @@ data   %>%  |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->  data
 frame       +--------+        +--------+        +--------+      frame
 ```
 
-```{r, dplyr_logo, out.height="50%", out.width="50%", fig.align='center'}
-knitr::include_graphics("images/dplyr_logo.png")
-```
+`%>%` - Pipe symbol that passes output from one function to another (Magrittr package)
 
----
-
-`%>%` 
-
-Pipe symbol that passes output from one function to another (Magrittr package)
-
-```{r, waterfall_gif, fig.align='center'}
+```{r, waterfall_gif, out.height="90%", fig.align='center'}
 knitr::include_graphics("images/waterfall.gif")
 ```
-
 
 ---
 ## dplyr
@@ -138,26 +132,36 @@ knitr::include_graphics("images/waterfall.gif")
 * arrange() changes the ordering of the rows
 
 ---
-## dplyr
+class: center, middle
+
+`Dataset` > Manipulate to extract information > Plot > Communicate
+
+---
 
 ```{r, include=FALSE}
 library(tidyverse)
-df <- readr::read_csv("data/domestic_airline_performance.csv", quote = "")
+df <- readr::read_csv("data/domestic_airline_performance.csv")
 ```
 
+The dataset:
+
+Australian domestic airlines on time dataset with information from 2004 to 2019 - `r nrow(df)` rows and `r ncol(df)` columns from http://data.gov.au/
+
 ```{r, echo=T, eval=FALSE}
-head(df, 30)
+head(df, 50)
 ```
 
 ```{r}
-rmarkdown::paged_table(head(df, 30))
+rmarkdown::paged_table(head(df, 50))
 ```
 
+---
+class: center, middle
+
+Dataset > `Manipulate to extract information` > Plot > Communicate
 
 ---
-## dplyr
-
-Australian domestic airlines dataset from 2004 to 2019 - `r nrow(df)` rows and `r ncol(df)` columns
+Use dplyr to extract information
 
 ```{r, echo=T, eval=FALSE}
 df %>% 
@@ -173,27 +177,7 @@ rmarkdown::paged_table(df1)
 ```
 
 ---
-## ggplot2
-
-Implements the grammar of graphics, a coherent system for describing and building graphs
-
-Takes a data-frame input, describes which columns maps to which aethestics and then builds a plot by layering 'geoms'.
-
-```
-ggplot(df, aes(x = column_A_df, y = column_B_df, color = column_C_df, 
-  shape = column_D_df, etc...)) +
-  geom_point() + geom_boxplot() + geom_etc() +
-  geom_line(new_data, aes(color = "blue")) + 
-  theme( modifications_to_plot_appearance )
-```
-
-Geoms define the type of plot the data should be displayed as.
-
-The top level aethestics & data will be passed on to all geoms but can be overriden by specificing new data/aethestics to that specific geom
-
----
-
-## ggplot2
+Extract route 'Adelaide-Brisbane' in the year 2008 & fix up the month column
 
 ```{r, echo =T}
 df2 <- df %>%
@@ -205,14 +189,38 @@ df2 <- df %>%
 rmarkdown::paged_table(head(df2, 30))
 ```
 
+---
+class: center, middle
+
+Dataset > Manipulate to extract information > `Plot` > Communicate
 
 ---
+## ggplot2
+
+Implements the grammar of graphics, a coherent system for describing and building graphs
+
+Takes a data-frame input, describes which columns maps to which aethestics and then builds a plot by layering 'geoms'.
+
+```{r, eval=FALSE, echo=T}
+ggplot(df, aes(x = column_A_df, y = column_B_df, color = column_C_df, 
+  etc...)) +
+  geom_point() + geom_boxplot() + geom_etc() +
+  geom_line(new_data, aes(color = "blue")) + 
+  theme( modifications_to_plot_appearance )
+```
+
+Geoms define the type of plot the data should be displayed as.
+
+The top level aethestics & data will be passed on to all geoms but can be overriden by specificing new data/aethestics to that specific geom
+
+---
+
 ```{r ggplot2_base, echo=T, eval=FALSE}
 gp <- ggplot(df2, aes(x = Month, y = Arrivals_On_Time, 
                       group = Airline, color = Airline))
 gp
 ```
-
+--
 ```{r, ggplot2_base_image}
 knitr::include_graphics("images/ggplot_base.png")
 ```
@@ -223,7 +231,7 @@ knitr::include_graphics("images/ggplot_base.png")
 gp <- gp + geom_line()
 gp
 ```
-
+--
 ```{r, ggplot2_line_layer1}
 knitr::include_graphics("images/ggplot_layer1.png")
 ```
@@ -233,24 +241,27 @@ knitr::include_graphics("images/ggplot_layer1.png")
 gp <- gp + geom_point(aes(y = Departures_Delayed, shape = Airline))
 gp
 ```
-
+--
 ```{r, ggplot2_line_layer2}
 knitr::include_graphics("images/ggplot_layer2.png")
 ```
 
 ---
 ```{r, ggplot2_line3,echo=T, eval=FALSE}
-gp <- gp + geom_point(aes(y = Sectors_Flown), data = filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", Year == 2008), color = "black")
+gp <- gp + geom_point(aes(y = Sectors_Flown), data = 
+          filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", 
+          Year == 2008), color = "black")
 gp
 ```
-
+--
 ```{r, ggplot2_line_layer3}
 knitr::include_graphics("images/ggplot_layer3.png")
 ```
 
 ---
 ```{r,ggplot2_line4, echo=T, eval=FALSE}
-gp <- gp + theme_bw() + ylab("Number of arrivals on time") + xlab("") +
+gp <- gp + theme_bw() + xlab("")
+  ylab("Number of arrivals on time") 
   ggtitle("Arrivals on time on Adelaide-Brisbane route in the year 2008 per airline")
 gp
 ```
@@ -264,11 +275,10 @@ class: center, middle
 ## Packages For Interactivity
 
 ---
-## Plotly
-
+### Plotly 
 Create interactive plots directly with `plot_ly()` function
-
-```{r}
+--
+```{r, plotly_demo, echo = T}
 df2 %>% group_by(Airline) %>% 
   plotly::plot_ly(x = ~Month, y = ~Arrivals_On_Time, color=~Airline,
                 type = 'scatter', mode = 'lines')
@@ -280,14 +290,14 @@ Or use it as a wrapper to a `ggplot` object with `ggplotly`
 ```{r, gp_eval, echo=FALSE, eval=TRUE}
 gp <- ggplot(df2, aes(x = Month, y = Arrivals_On_Time, group = Airline, color = Airline)) + 
   geom_line() + geom_point(aes(y = Departures_Delayed, shape = Airline)) + 
-  geom_point(aes(y = Sectors_Flown), data = filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", Year == 2008), color = "black") + theme_bw() + ylab("Number of arrivals on time") + xlab("") +
-  ggtitle("Arrivals on time on Adelaide-Brisbane route in the year 2008 per airline")
+  geom_point(aes(y = Sectors_Flown), data = filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", Year == 2008), color = "black") + theme_bw() + ylab("Number of arrivals on time") + xlab("") 
 ```
 
 
-```{r, ggplotly_code_block, echo=T}
+```{r, ggplotly_code_block, echo=T, eval=TRUE}
 plotly::ggplotly(gp)
 ```
+
 
 ---
 ## Shiny
@@ -313,7 +323,7 @@ shinyApp(ui = ui, server = server)
 ---
 ## A simple Shiny app in about 10 lines of code
 
-```{r, shiny_example, echo=T, eval=FALSe}
+```{r, shiny_example, echo=T, eval=FALSE}
 library(shiny)
 
 # Define UI for app that draws a line plot ----
@@ -356,6 +366,11 @@ shinyApp(ui = ui, server = server)
 More examples
 * [Varistran demo app](http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/)
 * [Shiny Gallery](https://shiny.rstudio.com/gallery/)
+
+---
+class: center, middle
+
+Dataset > Manipulate to extract information > Plot > `Communicate`
 
 ---
 background-image: url(images/r_env.png)
@@ -422,6 +437,14 @@ output:
 Code chunk options allow you to heavily customise the output of the code - is the code chunk included with the document, should the chunk run but is not displayed, or is it displayed but not run, define the display size of an image, give it a caption, etc
 
 This slideshow presentation itself is littered with silent code chunks that are not being displayed
+
+---
+
+## [R Markdown Let's Play](https://rstudio.cloud/project/481772)
+
+Github: aabarug
+
+Repo: quickstart_rmarkdown_sept_2019
 
 ---
 .pull-left[
