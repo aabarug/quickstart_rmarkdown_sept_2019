@@ -1,20 +1,19 @@
 ---
 title: "Playing with domestic airline perfomance data"
 author: "Kirill"
-date: '`r format(Sys.Date(), "%B %d, %Y")`'
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
 output:
-  pdf_document:
-    
   html_notebook:
+    code_folding: hide
     df_print: paged
-    code_folding: "hide"
-    toc: true
-    toc_float: true
-    toc_collapsed: true
-    toc_depth: 3
-    number_sections: false
-    theme: sandstone
     highlight: espresso
+    number_sections: no
+    theme: sandstone
+    toc: yes
+    toc_collapsed: yes
+    toc_depth: 3
+    toc_float: yes
+  pdf_document: null
 ---
 
 ```{r setup, echo = F}
