@@ -1,30 +1,21 @@
 ---
 title: "A Quickstart Guide to Data Analysis with R/R Markdown"
-author: "Adele Barugahare<br>Twitter: @technadele"
+author: "Adele Barugahare<br>Twitter: @technadele/Github: aabarug"
 date: "27/08/2019"
 output: 
-  xaringan::moon_reader:
-    css: xaringan-themer.css
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+  html_document:
+    df_print: "paged"
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    highlight: espresso
+    theme: sandstone
+runtime: shiny
 ---
-
----
-class: center, middle
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
-
-```{r xaringan-themer, include = FALSE}
-library(xaringanthemer)
-mono_accent_inverse(base_color = "#0086b3")
-#duo(primary_color = "#ccf2ff", secondary_color = "#0086b3")
-```
-
 
 ## In This Talk
 
@@ -34,16 +25,9 @@ knitr::include_graphics("images/data_science_pipeline_focus.png")
 
 Will walk you through these steps with a dataset
 
-.pull-right[
-
 Find these slides @ https://bit.ly/2lyGAqr
 
-]
-
----
 ## My Background
-
---
 
 ```{r, fig.align="center"}
 knitr::include_graphics("images/germline.png")
@@ -51,17 +35,13 @@ knitr::include_graphics("images/germline.png")
 
 Orignally a worm biologist, now bioinformatician @ Monash Bioinformatics Platform, more recently R-Ladies Melbourne organiser
 
-
---
 This talk can be considered 'Most Useful Things Worm Adele Would Have Liked to Have Known When Starting Out in R'
 
 
----
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/500px-R_logo.svg.png)
-background-size: 50%
-background-position: 50% 50%
+```{r, fig.align="center"}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/500px-R_logo.svg.png")
+```
 
----
 ## R & Things I Like About It
 
 Programming language for statistical computing and graphics
@@ -74,8 +54,89 @@ Continous active development
 
 Thorough documentation
 
----
-### R Data Analysis Toolbox
+```{r}
+knitr::include_graphics("images/r_env.png")
+```
+
+## R Markdown
+
+The marriage between Markdown, a lightweight markup language and R, a programming language for statistics
+
+An R Markdown file is a plain text document that allows you to embed R code chunks + plain text notes & images & videos. 
+
+Structure:
+
+1. YAML header - The meta-data that describes the final document output
+2. Markdown section - content/body of the document - your text/notes, images, links, etc
+3. Code chunks - where the R* code goes
+
+An R Markdown file by itself is quite simple but is neatly rendered into a more complicated document type
+
+*actually supports up to 52 language engines including Python, Julia, C++, MySQL, bash, etc
+
+## R Markdown & Analysis Reproducibility
+
+Document what you've done with your data in code
+
+R Markdown can render multiple different document types from one Rmd file
+
+The more places (files) an analysis is spread across, the more work it is to keep all of it accurate and up-to-date.
+
+R Markdown allows you to focus on generating content & doing your analysis without (hopefully) spending too much time fighting your document itself*
+
+*the more a document is geared towards a particular output type, the harder it is to neatly convert between formats
+
+
+#### YAML header
+
+```
+
+title: "Rmarkdown Quickstart"
+author: "Adele Barugahare"
+date: "27/08/2019"
+output: 
+  ioslides_presentation:
+    df_print: "paged"
+  html_document:
+    df_print: "paged"
+    toc: true
+    toc_depth: 2
+  pdf_document:
+    number_sections: true
+    df_print: "kable"
+
+```
+
+#### Code chunks
+
+```
+` ```{r, chunk_options}` `
+
+#Code analysis goes here
+x <- 1:10
+y <- x * 2
+
+plot(x, y)
+etc
+
+` ``` `
+```
+
+[R Markdown Let's Play](https://rstudio.cloud/project/481772)
+
+Create an account at [R Studio Cloud](https://rstudio.cloud/)
+
+Link to my github: https://bit.ly/2lyGAqr
+
+OR 
+
+Github account name: aabarug
+
+Repo: quickstart_rmarkdown_sept_2019
+
+The repo readme has a link to this workspace - you should be able to copy that into a workspace of your own
+
+## R Data Analysis Toolbox
 
 * Tidyverse - `an opinionated collection of R packages designed for data science`: ggplot2, dplyr, magrittr, tidyr, readr, etc
   - ggplot2 - extensive plotting package
@@ -88,8 +149,6 @@ Tabular data is represented as data-frames - in-built class
 knitr::include_graphics("images/toolbox.png")
 ```
 
-
----
 
 ### Tidyverse
 
@@ -106,9 +165,6 @@ Tidy data:
 ```{r, tidy_dat_image, out.height="90%" }
 knitr::include_graphics("images/tidy_data.png")
 ```
-
-
----
 
 ### dplyr
 
@@ -128,23 +184,11 @@ frame       +--------+        +--------+        +--------+      frame
 knitr::include_graphics("images/waterfall.gif")
 ```
 
----
-### dplyr
+**`Dataset`** > Manipulate to extract information > Plot > Communicate
 
-* mutate() adds new variables that are functions of existing variables
-* select() picks columns based on their names
-* filter() picks rows based on their values
-* summarise() reduces multiple values down to a single summary
-* arrange() changes the ordering of the rows
+Read in data:
 
----
-class: center, middle
-
-`Dataset` > Manipulate to extract information > Plot > Communicate
-
----
-
-```{r, include=FALSE}
+```{r, include=TRUE, echo=T}
 library(tidyverse)
 df <- readr::read_csv("data/domestic_airline_performance.csv")
 ```
@@ -153,54 +197,22 @@ The dataset:
 
 Australian domestic airlines on time dataset with information from 2004 to 2019 - `r nrow(df)` rows and `r ncol(df)` columns from http://data.gov.au/
 
-```{r, echo=T, eval=FALSE}
+```{r, echo=T}
 head(df, 50)
 ```
 
-```{r}
-rmarkdown::paged_table(head(df, 50))
-```
+Dataset > **`Manipulate to extract information`** > Plot > Communicate
 
----
-class: center, middle
-
-Dataset > `Manipulate to extract information` > Plot > Communicate
-
----
-Use dplyr to extract information
-
-```{r, echo=T, eval=FALSE}
-df %>% 
-  filter(Airline != "All Airlines", Route != "All Ports-All Ports") %>% 
-  group_by(Route, Airline) %>% summarise(n = n()) %>% head(20)
-```
-
-```{r}
-df1 <- df %>% 
-  filter(Airline != "All Airlines", Route != "All Ports-All Ports") %>% 
-  group_by(Route, Airline) %>% summarise(n = n()) %>% head(20)
-rmarkdown::paged_table(df1)
-```
-
----
 Extract route 'Adelaide-Brisbane' in the year 2008 & fix up the month column
 
 ```{r, echo =T}
 df2 <- df %>%
   filter(Airline != "All Airlines", Route == "Adelaide-Brisbane", Year == 2008) %>% 
-  mutate(Month = lubridate::month(x = Month_Num, label = T))
+  mutate(Month = lubridate::month(x = Month_Num, label = T)) %>% head(30)
 ```
 
-```{r}
-rmarkdown::paged_table(head(df2, 30))
-```
+Dataset > Manipulate to extract information > **`Plot`** > Communicate
 
----
-class: center, middle
-
-Dataset > Manipulate to extract information > `Plot` > Communicate
-
----
 ### ggplot2
 
 Implements the grammar of graphics, a coherent system for describing and building graphs
@@ -219,92 +231,69 @@ Geoms define the type of plot the data should be displayed as.
 
 The top level aethestics & data will be passed on to all geoms but can be overriden by specificing new data/aethestics to that specific geom
 
----
+ggplot2 predates Magrittr hences it uses `+` instead of `%>%`
 
-```{r ggplot2_base, echo=T, eval=FALSE}
+No geom layer - data is not displayed but a plot is generated
+
+```{r ggplot2_base, echo=T, eval=TRUE}
 gp <- ggplot(df2, aes(x = Month, y = Arrivals_On_Time, 
                       group = Airline, color = Airline))
 gp
 ```
---
-```{r, ggplot2_base_image}
-knitr::include_graphics("images/ggplot_base.png")
-```
 
 
----
-```{r ggplot2_line1, echo=T, eval=FALSE}
+```{r ggplot2_line1, echo=T, eval=TRUE}
 gp <- gp + geom_line()
 gp
 ```
---
-```{r, ggplot2_line_layer1}
-knitr::include_graphics("images/ggplot_layer1.png")
-```
 
----
-```{r, ggplot2_line2, echo=T, eval=FALSE}
+You can keep adding geoms...
+
+```{r, ggplot2_line2, echo=T, eval=TRUE}
 gp <- gp + geom_point(aes(y = Departures_Delayed, shape = Airline))
 gp
 ```
---
-```{r, ggplot2_line_layer2}
-knitr::include_graphics("images/ggplot_layer2.png")
-```
 
----
-```{r, ggplot2_line3,echo=T, eval=FALSE}
+```{r, ggplot2_line3, echo=T, eval=T}
 gp <- gp + geom_point(aes(y = Sectors_Flown), data = 
           filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", 
           Year == 2008), color = "black")
 gp
 ```
---
-```{r, ggplot2_line_layer3}
-knitr::include_graphics("images/ggplot_layer3.png")
-```
 
----
-```{r,ggplot2_line4, echo=T, eval=FALSE}
+```{r, ggplot2_line4, echo=T, eval=FALSE}
 gp <- gp + theme_bw() + xlab("")
   ylab("Number of arrivals on time") 
   ggtitle("Arrivals on time on Adelaide-Brisbane route in the year 2008 per airline")
 gp
 ```
 
-```{r, ggplot2_line_layer4}
-knitr::include_graphics("images/ggplot_final.png")
-```
-
----
-class: center, middle
 ## Packages For Interactivity
 
----
 ### Plotly
---
+
 ```{r, plotly_demo, echo = T}
 df2 %>% group_by(Airline) %>% plotly::plot_ly(x = ~Month, 
     y = ~Arrivals_On_Time, color=~Airline, type = 'scatter', 
     mode = 'lines')
 ```
 
----
+
 Or use it as a wrapper to a `ggplot` object with `ggplotly`
 
-```{r, gp_eval, echo=FALSE, eval=TRUE}
+```{r, gp_eval, echo=FALSE, eval=FALSE}
 gp <- ggplot(df2, aes(x = Month, y = Arrivals_On_Time, group = Airline, color = Airline)) + 
   geom_line() + geom_point(aes(y = Departures_Delayed, shape = Airline)) + 
   geom_point(aes(y = Sectors_Flown), data = filter(df2, Airline == "Qantas", Route == "Adelaide-Brisbane", Year == 2008), color = "black") + theme_bw() + ylab("Number of arrivals on time") + xlab("") 
 ```
 
 
-```{r, ggplotly_code_block, echo=T, eval=TRUE}
+```{r, ggplotly_code_block, echo=TRUE, eval=TRUE}
 plotly::ggplotly(gp)
 ```
 
 
----
+
 ### Shiny
 
 Develop interactive web applications/dashboards through the use of pre-built widgets. 
@@ -325,32 +314,31 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
----
-### A simple Shiny app in about 9 lines of code
+#### A simple Shiny app in about 9 lines of code
 
-```{r, shiny_example, echo=T, eval=FALSE}
+```{r, shiny_example, echo=T, eval=TRUE}
 library(shiny)
 
-# Define UI for app that draws a line plot ----
+# Define UI for app that draws a line plot -
 ui <- fluidPage(
     # Input: widget to select which airline to plot 
     selectInput(inputId = "select_airline", label = h3("Select airlines"), 
                 choices = list("Jetstar", "Qantas", "Virgin Australia"), 
                 selected = "Jetstar"),
     
-    # Output: Line plot ----
+    # Output: Line plot -
     plotOutput(outputId = "linePlot")
 )
 ```
 
+#### A simple Shiny app in about 9 lines of code
 
----
-```{r, server_shiny, echo=T,eval=FALSE}
-# Define server logic required to draw a line plot ----
+```{r, server_shiny, echo=T, eval=TRUE}
+# Define server logic required to draw a line plot -
 server <- function(input, output) {
   output$linePlot <- renderPlot({
     # Read data in and filter based on which airline is selected from the widget
-    df <- read_csv("data/df2_airline_subset.csv") %>% 
+    df <- df2 %>% 
       filter(Airline == input$select_airline)
     # Generate ggplot
     ggplot(df, aes(x = Month, y = Arrivals_On_Time, 
@@ -358,10 +346,7 @@ server <- function(input, output) {
 
     })
 }
-```
 
----
-```{r, shiny_app_launch, eval=FALSE, echo=T}
 # Run the application 
 shinyApp(ui = ui, server = server)
 ```
@@ -372,90 +357,10 @@ More examples
 * [Varistran demo app](http://rnasystems.erc.monash.edu:3838/pfh/2015/demo-varistran/)
 * [Shiny Gallery](https://shiny.rstudio.com/gallery/)
 
----
-class: center, middle
+Dataset > Manipulate to extract information > Plot > **`Communicate`**
 
-Dataset > Manipulate to extract information > Plot > `Communicate`
+## R Markdown Outputs
 
----
-background-image: url(images/r_env.png)
-background-size: 50%
-background-position: 50% 50%
----
-## R Markdown
-
-The marriage between Markdown, a lightweight markup language and R, a programming language for statistics
-
-An R Markdown file is a plain text document that allows you to embed R code chunks + plain text notes & images & videos. 
-
-Structure:
-
-1. YAML header - The meta-data that describes the final document output
-2. Markdown section - content/body of the document - your text/notes, images, links, etc
-3. Code chunks - where the R* code goes
-
-An R Markdown file by itself is quite simple but is neatly rendered into a more complicated document type
-
---
-
-*actually supports up to 52 language engines including Python, Julia, C++, MySQL, bash, etc
-
----
-## YAML header
-
-Meta-data that controls the document that is produced, one file can output to multiple file types
-
-Different documents have different options to customise e.g PDF documents can embed LaTeX and will have YAML options specific to LaTeX that cannot be used in html_documents
-
-Identation is important
-
-```
----
-title: "Rmarkdown Quickstart"
-author: "Adele Barugahare"
-date: "27/08/2019"
-output: 
-  ioslides_presentation:
-    df_print: "paged"
-  html_document:
-    df_print: "paged"
-    toc: true
-    toc_depth: 2
-  pdf_document:
-    number_sections: true
-    df_print: "kable"
----
-```
-
----
-## Code chunks
-
-` ```{r, customise_output_with_code_chunk_options} `
-
-`#Code analysis goes here`
-
-`x <- 1:10`
-
-`y <- x * 2`
-
-`etc`
-
-` ``` `
-
-Code chunk options allow you to heavily customise the output of the code - is the code chunk included with the document, should the chunk run but is not displayed, or is it displayed but not run, define the display size of an image, give it a caption, etc
-
-This slideshow presentation itself is littered with silent code chunks that are not being displayed
-
----
-
-## [R Markdown Let's Play](https://rstudio.cloud/project/481772)
-
-Github: aabarug
-
-Repo: quickstart_rmarkdown_sept_2019
-
----
-.pull-left[
 Supported Documents Outputs
 
 * webpages
@@ -466,42 +371,19 @@ Supported Documents Outputs
 * Websites
 
 ...and more created by the R community
-]
-
-.pull-right[
 
 Packages that further build on top of R Markdown
 
-* blogdown - combines R Markdown & Hugo to create general purpose websites
-* bookdown - authoring books, thesis, sfotware manuals, etc
-* flexdashboards - HTML outputs with dashboard layouts
-* xaringan - slides shows
-]
+* [blogdown](https://bookdown.org/yihui/blogdown/) - combines R Markdown & Hugo to create general purpose websites
+* [bookdown](https://bookdown.org/) - authoring books, thesis, sfotware manuals, etc
+* [flexdashboards](https://rmarkdown.rstudio.com/flexdashboard/) - HTML outputs with dashboard layouts
+* [xaringan](https://slides.yihui.name/xaringan/) - slides shows with remark.js
 
-You can also build Shiny apps into R Markdown documents
-
----
-
-## R Markdown & Analysis Reproducibility
-
-Document what you've done with your data in code
-
-R Markdown can render multiple different document types from one Rmd file
-
-The more places (files) an analysis is spread across, the more work it is to keep all of it accurate and up-to-date.
-
-R Markdown allows you to focus on generating content & doing your analysis without (hopefully) spending too much time fighting your document itself*
-
---
-*the more a document is geared towards a particular output type, the harder it is to neatly convert between formats
-
----
 ## Neat Examples
 
 * [Emi Tanaka's personal website](https://emitanaka.org/) - blogdown for website, xaringan for slides, shiny + plotly for web apps
-* [Rob Hyn](https://robjhyndman.com/)
+* [Rob Hyndman](https://robjhyndman.com/)
 
----
 ## Recommended Resources For Further Learning
 
 * [R for Data Science](https://r4ds.had.co.nz/)
