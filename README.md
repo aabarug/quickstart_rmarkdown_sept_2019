@@ -12,8 +12,7 @@ The slideshow:
 
 Slideshow as an html document:
 
-[Here (RSConnect)](https://bioinformatics3.erc.monash.edu/rsconnect/content/60/) OR
-[here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_rmarkdown.html)
+[Here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_rmarkdown.html)
 
 Example R Notebook:
 

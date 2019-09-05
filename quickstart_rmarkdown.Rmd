@@ -89,6 +89,8 @@ R Markdown can render multiple different document types from one Rmd file
 
 The more places (files) an analysis is spread across, the more work it is to keep all of it accurate and up-to-date.
 
+Rendering a R Markdown document will re-execute all code chunks, if your code doesn't work, it'll fail
+
 R Markdown allows you to focus on generating content & doing your analysis without (hopefully) spending too much time fighting your document itself*
 
 *the more a document is geared towards a particular output type, the harder it is to neatly convert between formats
