@@ -10,6 +10,13 @@ output:
     toc_float: true
     highlight: espresso
     theme: sandstone
+  html_notebook:
+    df_print: "paged"
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    highlight: haddock
+    theme: paper
 #runtime: shiny
 ---
 
@@ -334,7 +341,7 @@ ui <- fluidPage(
 
 #### A simple Shiny app in about 9 lines of code
 
-```{r, server_shiny, echo=T, eval=TRUE}
+```{r, server_shiny, echo=T, eval=FALSE}
 # Define server logic required to draw a line plot -
 server <- function(input, output) {
   output$linePlot <- renderPlot({
