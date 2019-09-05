@@ -8,7 +8,7 @@ If you need help with RStudio Online: https://rstudio.cloud/learn/guide
 
 The slideshow:
 
-[Here (RSConnect)](https://bioinformatics3.erc.monash.edu/rsconnect/content/59/quickstart_slides_xaringan.html) OR [here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_slides_xaringan.html)
+[Here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_slides_xaringan.html)
 
 Slideshow as an html document:
 
@@ -19,6 +19,7 @@ Example R Notebook:
 
 https://bioinformatics3.erc.monash.edu/rsconnect/content/58/notebook.nb.html
 
+More example R Markdown files can be found in the repo folder `example_documents`
 
 Meetup event
 
