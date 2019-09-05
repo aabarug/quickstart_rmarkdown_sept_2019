@@ -8,11 +8,12 @@ If you need help with RStudio Online: https://rstudio.cloud/learn/guide
 
 The slideshow:
 
-https://bioinformatics3.erc.monash.edu/rsconnect/content/59/quickstart_slides_xaringan.html
+[Here (RSConnect)](https://bioinformatics3.erc.monash.edu/rsconnect/content/59/quickstart_slides_xaringan.html) OR [here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_slides_xaringan.html)
 
 Slideshow as an html document:
 
-https://bioinformatics3.erc.monash.edu/rsconnect/content/60/
+[Here (RSConnect)](https://bioinformatics3.erc.monash.edu/rsconnect/content/60/) OR
+[here](https://bioinformatics.erc.monash.edu/home/adele/training/talks/quickstart_rmarkdown_sept_2019/quickstart_rmarkdown.html)
 
 Example R Notebook:
 
